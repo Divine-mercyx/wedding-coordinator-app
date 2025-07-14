@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wedding Coordinator Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                DEFAULT: 'hsl(340, 60%, 65%)',
+                '50': 'hsl(340, 60%, 95%)',
+                '100': 'hsl(340, 60%, 90%)',
+                '200': 'hsl(340, 60%, 85%)',
+                '300': 'hsl(340, 60%, 80%)',
+                '400': 'hsl(340, 60%, 75%)',
+                '500': 'hsl(340, 60%, 70%)',
+                '600': 'hsl(340, 60%, 65%)',
+                '700': 'hsl(340, 60%, 60%)',
+                '800': 'hsl(340, 60%, 55%)',
+                '900': 'hsl(340, 60%, 50%)',
+                '950': 'hsl(340, 60%, 45%)',
+              },
+            }
+          }
+        }
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.6.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
