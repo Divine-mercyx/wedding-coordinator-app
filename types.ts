@@ -1,13 +1,18 @@
 
 export interface Coordinator {
-  id: number;
+  _id: string;
   name: string;
   location: string;
   price: number;
-  profilePhotoUrl: string;
+  profilePhoto: string;
   bio: string;
-  unavailableDates: string[]; // Dates in "YYYY-MM-DD" format
+  availability: Array<{
+    date: string;
+    isAvailable: boolean;
+  }>;
+  createdAt: string;
 }
+
 
 export interface BookingRequest {
   coordinatorId: number;

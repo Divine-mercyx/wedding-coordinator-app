@@ -7,17 +7,16 @@ import { MapPinIcon, DollarSignIcon } from './IconComponents';
 interface CoordinatorCardProps {
   coordinator: Coordinator;
 }
-
 const CoordinatorCard: React.FC<CoordinatorCardProps> = ({ coordinator }) => {
   return (
-    <Link
-      to={`/coordinator/${coordinator.id}`}
-      className="group block bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-primary/20 transform hover:-translate-y-1 transition-all duration-300"
-    >
+      <Link
+          to={`/coordinator/${coordinator._id}`}
+          className="group block bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-primary/20 transform hover:-translate-y-1 transition-all duration-300"
+      >
       <div className="relative">
         <img
           className="w-full h-56 object-cover"
-          src={coordinator.profilePhotoUrl}
+          src={coordinator.profilePhoto}
           alt={`Profile of ${coordinator.name}`}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>

@@ -16,7 +16,7 @@ const CoordinatorDetail: React.FC = () => {
         navigate('/');
       }
       const data = await response.json();
-      setCoordinator(data);
+      setCoordinator(data.data.coordinator);
     };
     fetchCoordinatorDetails();
   }, [id, navigate]);
@@ -28,6 +28,8 @@ const CoordinatorDetail: React.FC = () => {
         </div>
     );
   }
+
+  console.log(coordinator);
   return (
     <>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -36,7 +38,7 @@ const CoordinatorDetail: React.FC = () => {
             <div className="md:flex-shrink-0">
               <img
                 className="h-64 w-full object-cover md:h-full md:w-64 lg:w-80"
-                src={coordinator.profilePhotoUrl}
+                src={coordinator.profilePhoto}
                 alt={`Profile of ${coordinator.name}`}
               />
             </div>
@@ -71,14 +73,12 @@ const CoordinatorDetail: React.FC = () => {
                 Availability
               </h3>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                The following dates are already booked and unavailable.
+                .
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
-                {coordinator.unavailableDates.map(date => (
-                    <span key={date} className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-1.5 rounded-full dark:bg-red-900 dark:text-red-300">
-                      {new Date(date + 'T00:00:00').toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+                    <span className={`bg-red-100 ${ coordinator.availability[0].isAvailable ? "dark:bg-violet-400 dark:text-gray-50" : "dark:bg-red-900 dark:text-red-300" }  text-xs font-medium px-2.5 py-1.5 rounded-full dark:bg-red-900 `}>
+                      {coordinator.availability[0].isAvailable ? 'Available' : 'Unavailable'}
                     </span>
-                ))}
               </div>
           </div>
         </div>
@@ -94,7 +94,6 @@ const CoordinatorDetail: React.FC = () => {
         <BookingModal
           coordinator={coordinator}
           onClose={() => setIsModalOpen(false)}
-          onBookingSubmit={handleBookingSubmit}
         />
       )}
     </>

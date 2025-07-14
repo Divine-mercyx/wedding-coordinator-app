@@ -14,6 +14,9 @@ const BookingModal: React.FC<BookingModalProps> = ({ coordinator, onClose }) => 
   const [error, setError] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const today = new Date().toISOString().split('T')[0];
+
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!clientName || !clientEmail || !weddingDate) {
@@ -21,31 +24,57 @@ const BookingModal: React.FC<BookingModalProps> = ({ coordinator, onClose }) => 
       return;
     }
 
-    // Check availability
-    const availabilityResponse = await fetch(`https://wedding-coordinator-backend.onrender.com/api/v1/wedding/coordinators/${coordinator.id}/check-availability`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ date: weddingDate }),
-    });
-    const availabilityData = await availabilityResponse.json();
-    if (!availabilityData.available) {
-      setError('This date is not available. Please select another date.');
-      return;
-    }
+    try {
+      const isoDate = new Date(weddingDate).toISOString();
 
-    // Submit booking
-    const bookingResponse = await fetch('https://wedding-coordinator-backend.onrender.com/api/v1/wedding/bookings/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ coordinatorId: coordinator.id, clientName, clientEmail, weddingDate, guestCount }),
-    });
-    if (!bookingResponse.ok) {
-      setError('Failed to submit booking. Please try again.');
-      return;
-    }
+      const availabilityResponse = await fetch(
+          `https://wedding-coordinator-backend.onrender.com/api/v1/wedding/coordinators/${coordinator._id}/check-availability`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ date: isoDate }),
+          }
+      );
 
-    setIsSubmitted(true);
+      console.log(availabilityResponse);
+      if (!availabilityResponse.ok) {
+        throw new Error('Availability check failed');
+      }
+
+      const availabilityData = await availabilityResponse.json();
+      console.log(availabilityData);
+      if (!availabilityData.data.isAvailable) {
+        setError('This date is not available. Please select another date.');
+        return;
+      }
+
+      const bookingResponse = await fetch(
+          'https://wedding-coordinator-backend.onrender.com/api/v1/wedding/bookings/',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              coordinator: coordinator._id,
+              name: clientName,
+              email: clientEmail,
+              weddingDate,
+              guestNumber: guestCount,
+            }),
+          }
+      );
+
+      if (!bookingResponse.status) {
+        setError('Coordinator already booked. Please select another date.');
+      }
+
+      alert("Booking request sent successfully!");
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error('Error:', error);
+      setError('An error occurred. Please try again.');
+    }
   };
+
 
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 p-4" onClick={onClose}>
